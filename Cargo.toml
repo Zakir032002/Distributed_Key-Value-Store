@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "kvstore",
+    "raftcore",
+    "storage",
+    "sharding",
+    "client",
+    "common",
+]
+
+resolver = "2"
