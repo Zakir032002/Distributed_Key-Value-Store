@@ -1,1 +1,154 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+   0.072080667s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: fingerprint error for raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("raftcore", ["lib"], "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/lib.rs", Edition2024) }
+   0.072568500s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-3377ec0c3d6214ad/lib-raftcore`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.088820250s  INFO prepare_target{force=false package_id=raft v0.7.0 target="raft"}: cargo::core::compiler::fingerprint: fingerprint error for raft v0.7.0/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("raft", ["lib"], "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raft-0.7.0/src/lib.rs", Edition2021) }
+   0.088827708s  INFO prepare_target{force=false package_id=raft v0.7.0 target="raft"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raft-f9b076c29c676143/lib-raft`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: std::rt::lang_start_internal
+  18: _main
+   0.090320417s  INFO prepare_target{force=false package_id=raft-proto v0.7.0 target="raft_proto"}: cargo::core::compiler::fingerprint: fingerprint error for raft-proto v0.7.0/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("raft_proto", ["lib"], "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raft-proto-0.7.0/src/lib.rs", Edition2021) }
+   0.090324583s  INFO prepare_target{force=false package_id=raft-proto v0.7.0 target="raft_proto"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raft-proto-5293797625c2e703/lib-raft_proto`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.090517542s  INFO prepare_target{force=false package_id=raft-proto v0.7.0 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for raft-proto v0.7.0/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raft-proto-0.7.0/build.rs", Edition2021) }
+   0.090521083s  INFO prepare_target{force=false package_id=raft-proto v0.7.0 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raft-proto-2bf1f86edaae72af/run-build-script-build-script-build`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::custom_build::build_work
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: cargo::core::compiler::compile
+  11: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  12: cargo::ops::cargo_compile::compile_ws
+  13: cargo::ops::cargo_compile::compile_with_exec
+  14: cargo::ops::cargo_compile::compile
+  15: cargo::commands::check::exec
+  16: <cargo::cli::Exec>::exec
+  17: cargo::main
+  18: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  19: std::rt::lang_start::<()>::{closure#0}
+  20: std::rt::lang_start_internal
+  21: _main
+   0.100734417s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: fingerprint error for raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("raftcore", ["lib"], "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/lib.rs", Edition2024) }
+   0.100740125s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-db3a370be0d4a4e5/test-lib-raftcore`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   Compiling raft-proto v0.7.0
+error: failed to run custom build command for `raft-proto v0.7.0`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  process didn't exit successfully: `/Users/zakirhussain/Desktop/distributed-kv/target/debug/build/raft-proto-4564bc83009526f6/build-script-build` (exit status: 101)
+  --- stdout
+  The system `protoc` version mismatch, require >= 3.1.0, got 33.0.x, fallback to the bundled `protoc`
+
+  --- stderr
+
+  thread 'main' (12729234) panicked at /Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/protobuf-build-0.14.1/src/protobuf_impl.rs:35:14:
+  No suitable `protoc` (>= 3.1.0) found in PATH
+  stack backtrace:
+     0: std::panicking::begin_panic
+               at /rustc/f8297e351a40c1439a467bbbb6879088047f50b3/library/std/src/panicking.rs:770:5
+     1: protobuf_build::protobuf_impl::get_protoc
+     2: protobuf_build::protobuf_impl::<impl protobuf_build::Builder>::generate_files
+     3: protobuf_build::Builder::generate
+     4: build_script_build::main
+     5: core::ops::function::FnOnce::call_once
+  note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
