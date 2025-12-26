@@ -5,7 +5,11 @@ use raft::{
       raw_node::RawNode                     //raft core state machine
 };
 use slog::{Drain,Logger,o};                 // structured logging
-use anyhow::{Ok, Result};                         // easy error 
+use anyhow::{Ok, Result};                         // easy error
+
+use common::Command;
+use serde_json;
+
 
 // This RaftNode code is the consensus engine that ensures all nodes in your cluster agree on the same sequence of operations, even when nodes crash or networks fail.
 

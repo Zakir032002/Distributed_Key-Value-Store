@@ -3,8 +3,8 @@ use serde::{Serialize,Deserialize};
 //it will transform it into bytes and send it over the network
 #[derive(Debug,Clone,Serialize,Deserialize)]
 pub enum Command {
-    Put {key : Vec<u8>, value : Vec<u8>},
-    Delete {success:bool}
+    Put {key : Vec<u8>, value : Vec<u8>, request_id : u64},
+    Delete { success:bool, request_id : u64}
 }
 
 #[derive(Debug,Serialize,Deserialize,Clone)]
