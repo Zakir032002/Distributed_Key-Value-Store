@@ -9,8 +9,8 @@ use anyhow::{Ok, Result};                         // easy error
 
 use common::Command;
 use serde_json;
-
-
+use crate::store::KvStore;
+use std::collections::HashMap;
 // This RaftNode code is the consensus engine that ensures all nodes in your cluster agree on the same sequence of operations, even when nodes crash or networks fail.
 
 
@@ -18,7 +18,9 @@ pub struct RaftNode{
       pub id : u64,                        // unique node identifier
       pub raw_node : RawNode<MemStorage>,  // the raft concensus state machine
       pub storage : MemStorage,            // Persistent Raft log + hard state
-      pub logger  : Logger                 // Structured Logger
+      pub logger  : Logger,                 // Structured Logger
+      pub kv_store: KvStore,                //inmemory store for raft
+      pub callbacks: HashMap<u64, Box<dyn FnOnce() + Send>>,
 }
 
 impl RaftNode {
@@ -41,7 +43,7 @@ impl RaftNode {
       let storage = MemStorage::new_with_conf_state((peers.clone(), vec![])); // Creates in-memory storage with initial cluster configuration
       let mut node = RawNode::new(&cfg, storage.clone(), &logger).unwrap(); // 
 
-      Ok(Self { id, raw_node: node, storage, logger })
+      Ok(Self { id, raw_node: node, storage, logger,kv_store : KvStore::new(), callbacks : HashMap::new() })
 
     }
 
@@ -140,6 +142,36 @@ impl RaftNode {
         self.storage.wl().apply_snapshot(snap.clone())?;
         Ok(())
     }
+
+    fn apply_normal(&mut self,cmd:Command)->Result<()>{
+        match cmd{
+            Command::Put { key, value, request_id } =>{
+                self.kv_store.put(key, value);
+                if let Some(cb) = self.callbacks.remove(&request_id) {
+                    cb();
+                }
+
+            }
+            Command::Delete { success, request_id,key }=>{
+                self.kv_store.delete(&key);
+                if let Some(cb) = self.callbacks.remove(&request_id) {
+                    cb();
+                }
+
+            }
+        }
+        Ok(())
+    }
+
+    pub fn propose_with_callback(&mut self,cmd: Command,request_id: u64,callback: Box<dyn FnOnce() + Send>,) -> Result<()> {
+        let data = serde_json::to_vec(&cmd)?;
+        self.callbacks.insert(request_id, callback);
+        self.raw_node.propose(vec![], data)?;
+        Ok(())
+    }
+
+
+
 
 
 }

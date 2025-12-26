@@ -4,7 +4,7 @@ use serde::{Serialize,Deserialize};
 #[derive(Debug,Clone,Serialize,Deserialize)]
 pub enum Command {
     Put {key : Vec<u8>, value : Vec<u8>, request_id : u64},
-    Delete { success:bool, request_id : u64}
+    Delete { success:bool, request_id : u64 , key: Vec<u8>}
 }
 
 #[derive(Debug,Serialize,Deserialize,Clone)]
