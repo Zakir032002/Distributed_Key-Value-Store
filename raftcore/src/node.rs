@@ -1,80 +1,74 @@
 use raft::{
-      storage::{MemStorage,MemStorageCore}, //core raft in-memory storage
-      Config,                               //raft configutration
-      prelude::*,                           //common message types
-      raw_node::RawNode                     //raft core state machine
+    storage::{MemStorage, MemStorageCore}, //core raft in-memory storage
+    Config,                               //raft configuration
+    prelude::*,                           //common message types
+    raw_node::RawNode                     //raft core state machine
 };
-use slog::{Drain,Logger,o};                 // structured logging
-use anyhow::{Ok, Result};                         // easy error
+use slog::{Drain, Logger, o};            // structured logging
+use anyhow::{Ok, Result};                // easy error
 
 use common::Command;
 use serde_json;
 use crate::store::KvStore;
 use std::collections::HashMap;
-// This RaftNode code is the consensus engine that ensures all nodes in your cluster agree on the same sequence of operations, even when nodes crash or networks fail.
+use crate::cluster::ClusterTransport;
 
+// This RaftNode code is the consensus engine that ensures all nodes in your cluster agree on the same sequence of operations, even when nodes crash or networks fail.
 
 pub struct RaftNode{
       pub id : u64,                        // unique node identifier
-      pub raw_node : RawNode<MemStorage>,  // the raft concensus state machine
+      pub raw_node : RawNode<MemStorage>,  // the raft consensus state machine
       pub storage : MemStorage,            // Persistent Raft log + hard state
       pub logger  : Logger,                 // Structured Logger
-      pub kv_store: KvStore,                //inmemory store for raft
+      pub kv_store: KvStore,                // in-memory store for raft
       pub callbacks: HashMap<u64, Box<dyn FnOnce() + Send>>,
 }
 
 impl RaftNode {
     pub fn new(id:u64, peers:Vec<u64>)->Result<Self>{
       //setting up the logger
-      let decorator = slog_term::TermDecorator::new().build(); //Configures terminal output formatting (colors, timestamps)
-      let drain = slog_term::CompactFormat::new(decorator).build().fuse(); //Reduces log verbosity (single-line format)
-      let drain = slog_async::Async::new(drain).build().fuse(); // Offloads logging to background thread
-      let logger = slog::Logger::root(drain, o!()); // Creates root logger with no additional context
+      let decorator = slog_term::TermDecorator::new().build(); 
+      let drain = slog_term::CompactFormat::new(decorator).build().fuse();
+      let drain = slog_async::Async::new(drain).build().fuse();
+      let logger = slog::Logger::root(drain, o!());
 
       let mut cfg = Config{
-            id,                     //  Node's unique Raft id
-            election_tick : 10,     //  Number of ticks before follower becomes candidate and starts election
-            heartbeat_tick : 3,     //  Number of ticks between leader heartbeats
+            id,                     
+            election_tick : 10,    
+            heartbeat_tick : 3,
             ..Default::default() 
       };
 
-      cfg.validate()?;              //  validates the config like election_tick > heartbeat tick , id != 0 etc..
+      cfg.validate()?;
+      
+                    
 
-      let storage = MemStorage::new_with_conf_state((peers.clone(), vec![])); // Creates in-memory storage with initial cluster configuration
-      let mut node = RawNode::new(&cfg, storage.clone(), &logger).unwrap(); // 
+      let storage = MemStorage::new_with_conf_state((peers.clone(), vec![])); 
+      let mut node = RawNode::new(&cfg, storage.clone(), &logger).unwrap(); 
 
-      Ok(Self { id, raw_node: node, storage, logger,kv_store : KvStore::new(), callbacks : HashMap::new() })
+      if peers.len() == 1 {
+        node.campaign().unwrap();
+        }
 
+      Ok(Self { id, raw_node: node, storage, logger, kv_store : KvStore::new(), callbacks : HashMap::new() })
     }
 
-    // Advances Raft's logical clock by one tick and called by event loop every 100ms
     pub fn tick(&mut self){
-      self.raw_node.tick(); // without regular tick calls , the raft node will be in frozen state
+      self.raw_node.tick(); 
     }
-      // Follower mode: Increments election timeout counter
-      //          : If counter reaches election_tick → become Candidate, start election
-      // Leader mode: Increments heartbeat counter
-      //          : If counter reaches heartbeat_tick → send heartbeat to all followers
-      // Candidate mode: Checks election timeout
 
-    // Feeds Raft messages from other nodes into state machine
     pub fn step(&mut self,message: Message)->Result<()>{
-      self.raw_node.step(message)?; //recieves the message and upodates the raft internal state
+      self.raw_node.step(message)?; 
       Ok(())
     }
-      // MsgHeartbeat: Leader→Follower keepalive
-      // MsgVote: Candidate→Follower election request
-      // MsgAppend: Leader→Follower log replication
-      // MsgVoteResp: Follower→Candidate vote response
-      // MsgAppendResp: Follower→Leader replication acknowledgment
 
-    //submit client requests
     pub fn propose(&mut self, data : Vec<u8>)->Result<()>{
       self.raw_node.propose(vec![], data)?;
       Ok(())
     }
 
-    pub fn on_ready(&mut self) -> Result<()> {
+    // NOW ACCEPTS TRANSPORT
+    pub fn on_ready(&mut self, transport: &mut ClusterTransport) -> Result<()> {
         if !self.raw_node.has_ready() {
             return Ok(());
         }
@@ -83,7 +77,7 @@ impl RaftNode {
 
         // 1. Send messages to other nodes (handled externally)
         for msg in ready.take_messages() {
-            self.handle_message_send(msg);
+            self.handle_message_send(msg, transport);
         }
 
         // 2. Handle snapshot
@@ -108,14 +102,14 @@ impl RaftNode {
 
         // 6. Persisted messages (after hardstate + entries)
         for msg in ready.take_persisted_messages() {
-            self.handle_message_send(msg);
+            self.handle_message_send(msg, transport);
         }
 
         // 7. Advance the Raft node
         let mut light_rd = self.raw_node.advance(ready);
 
         for msg in light_rd.take_messages() {
-            self.handle_message_send(msg);
+            self.handle_message_send(msg, transport);
         }
 
         for entry in light_rd.take_committed_entries() {
@@ -127,17 +121,24 @@ impl RaftNode {
         Ok(())
     }
 
-    fn handle_message_send(&self, _msg: Message) {
-        // Transport layer will be inserted here later.
+    // IMPORTANT: FIXED SIGNATURE (NOW CORRECT)
+    pub fn handle_message_send(&self, msg: Message, transport: &ClusterTransport) {
+        transport.send(msg);
     }
 
-    // Placeholder: KV Store apply layer added next step
-    fn handle_committed(&mut self, _entry: Entry) -> Result<()> {
-        // We'll decode entry.data & call state machine apply()
+    fn handle_committed(&mut self, entry: Entry) -> Result<()> {
+        if entry.data.is_empty() {
+            return Ok(());
+        }
+
+        if entry.get_entry_type() == EntryType::EntryNormal {
+            let cmd: Command = serde_json::from_slice(&entry.data)?;
+            self.apply_normal(cmd)?
+        }
+
         Ok(())
     }
 
-    // Snapshot support 
     fn apply_snapshot(&mut self, snap: &Snapshot) -> Result<()> {
         self.storage.wl().apply_snapshot(snap.clone())?;
         Ok(())
@@ -150,28 +151,21 @@ impl RaftNode {
                 if let Some(cb) = self.callbacks.remove(&request_id) {
                     cb();
                 }
-
             }
-            Command::Delete { success, request_id,key }=>{
+            Command::Delete { request_id,key }=>{
                 self.kv_store.delete(&key);
                 if let Some(cb) = self.callbacks.remove(&request_id) {
                     cb();
                 }
-
             }
         }
         Ok(())
     }
 
-    pub fn propose_with_callback(&mut self,cmd: Command,request_id: u64,callback: Box<dyn FnOnce() + Send>,) -> Result<()> {
+    pub fn propose_with_callback(&mut self,cmd: Command,request_id: u64,callback: Box<dyn FnOnce() + Send>) -> Result<()> {
         let data = serde_json::to_vec(&cmd)?;
         self.callbacks.insert(request_id, callback);
         self.raw_node.propose(vec![], data)?;
         Ok(())
     }
-
-
-
-
-
 }

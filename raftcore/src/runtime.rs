@@ -1,5 +1,5 @@
-use crate::RaftNode;
-use crate::events::Event;
+use crate::{Event, RaftNode};
+use crate::cluster::ClusterTransport;
 
 use anyhow::Result;
 use tokio::sync::mpsc::UnboundedReceiver;
@@ -14,33 +14,33 @@ impl RaftRuntime {
         Self { node }
     }
 
-    pub async fn start(mut self, mut rx: UnboundedReceiver<Event>) -> Result<()> {
-      self.node.raw_node.campaign()?;
-        let mut ticker = interval(Duration::from_millis(100));
+    pub async fn start_with_transport(mut self,mut rx: UnboundedReceiver<Event>,transport: ClusterTransport) -> Result<()> {
 
+
+        let mut ticker = interval(Duration::from_millis(100));
 
         loop {
             tokio::select! {
-                // Tick every 100ms
+                // TICK → drives election & heartbeat
                 _ = ticker.tick() => {
                     self.node.tick();
-                    self.node.on_ready()?;
+                    self.node.on_ready(&transport)?;
                 }
 
-                // Receive events
+                // INCOMING CLIENT / RAFT EVENTS
                 Some(event) = rx.recv() => {
                     match event {
                         Event::Propose { data, request_id, callback } => {
+                            // client command
                             self.node.callbacks.insert(request_id, callback);
                             self.node.raw_node.propose(vec![], data)?;
                         }
-
                         Event::Step(msg) => {
+                            // raft protocol messages
                             self.node.raw_node.step(msg)?;
                         }
                     }
-
-                    self.node.on_ready()?;
+                    self.node.on_ready(&transport)?;
                 }
             }
         }

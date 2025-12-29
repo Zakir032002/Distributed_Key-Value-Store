@@ -4,7 +4,7 @@ pub mod runtime;
 pub mod events;
 pub mod node;
 pub mod store;
-
+pub mod cluster;
 pub use node::RaftNode;
 pub use runtime::RaftRuntime;
 pub use events::Event;
