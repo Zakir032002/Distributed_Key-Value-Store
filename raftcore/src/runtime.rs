@@ -15,7 +15,9 @@ impl RaftRuntime {
     }
 
     pub async fn start(mut self, mut rx: UnboundedReceiver<Event>) -> Result<()> {
+      self.node.raw_node.campaign()?;
         let mut ticker = interval(Duration::from_millis(100));
+
 
         loop {
             tokio::select! {
