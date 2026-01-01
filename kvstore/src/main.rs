@@ -10,53 +10,83 @@ async fn main() {
     let mut transport = ClusterTransport::new();
     let mut handles = vec![];
 
-    println!("Starting 5-node Raft cluster...");
+    println!("🚀 Starting 5-node Raft cluster...\n");
 
+    // Register ALL nodes FIRST
+    let mut channels = vec![];
     for id in node_ids.clone() {
         let (tx, rx) = unbounded_channel();
-
         transport.register(id, tx.clone());
+        channels.push((id, rx));
+    }
 
-        let node = RaftNode::new(id, node_ids.clone()).unwrap();
+    // NOW start all nodes with fully-initialized transport
+    for (id, rx) in channels {
+        let node = RaftNode::new(id, node_ids.clone())
+            .expect("Failed to create Raft node");
+        
         let runtime = RaftRuntime::new(node);
-        let t = transport.clone();
+        let t = transport.clone();  // All peers already registered
 
         let h = tokio::spawn(async move {
-            runtime.start_with_transport(rx, t).await.unwrap();
+            println!("✅ Node {} started", id);
+            if let Err(e) = runtime.start_with_transport(rx, t).await {
+                eprintln!("❌ Node {} error: {}", id, e);
+            }
         });
 
         handles.push(h);
     }
 
-    println!("Cluster booted. Waiting for election...");
-    tokio::time::sleep(Duration::from_millis(1200)).await;
+    println!("⏳ Waiting for leader election (3 seconds)...\n");
+    tokio::time::sleep(Duration::from_secs(3)).await;
 
-    println!("=> LEADER SHOULD BE ELECTED ABOVE IN LOGS");
+    println!("\n📝 Attempting write: username=zakir\n");
 
-    // ---------------------------------------------------------------------
-    // TEST CLIENT REQUEST (hit any node; it will drop if not leader)
-    // ---------------------------------------------------------------------
+for node_id in node_ids.clone() {
+    if let Some(tx) = transport.peers.get(&node_id) {
+        let cmd = Command::Put {
+            key: b"username".to_vec(),
+            value: b"zakir".to_vec(),
+            request_id: 777,
+        };
 
-    let leader_id = 1; // later we'll auto-detect; for now try ID 1
-    let tx = transport.peers.get(&leader_id).unwrap();
+        let result = tx.send(Event::Propose {
+            data: serde_json::to_vec(&cmd).unwrap(),
+            request_id: 777,
+            callback: Box::new(move || {
+                println!("✅ [CLIENT] Write committed via node {}!", node_id);
+            }),
+        });
 
-    let cmd = Command::Put {
-        key: b"username".to_vec(),
-        value: b"zakir".to_vec(),
-        request_id: 777,
-    };
+        if result.is_ok() {
+            println!("📤 Sent proposal to node {}", node_id);
+            break;
+        }
+    }
+}
 
+// Wait for commit
+tokio::time::sleep(Duration::from_millis(500)).await;
+
+// Now READ the value back
+println!("\n📖 Reading username...\n");
+
+let cmd_get = Command::Get {
+    key: b"username".to_vec(),
+    request_id: 888,
+};
+
+if let Some(tx) = transport.peers.get(&1) {
     tx.send(Event::Propose {
-        data: serde_json::to_vec(&cmd).unwrap(),
-        request_id: 777,
-        callback: Box::new(|| println!("[CLIENT] => write committed")),
+        data: serde_json::to_vec(&cmd_get).unwrap(),
+        request_id: 888,
+        callback: Box::new(|| {
+            println!("✅ [CLIENT] Read completed!");
+        }),
     }).unwrap();
+}
 
-    println!("Wrote 'username=zakir' to cluster.");
+println!("\n🎯 Press Ctrl+C to stop\n");
 
-    // ---------------------------------------------------------------------
-    // WAIT FOR CTRL-C
-    // ---------------------------------------------------------------------
-    println!("\nPress Ctrl+C to stop cluster.");
-    tokio::signal::ctrl_c().await.unwrap();
 }

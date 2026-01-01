@@ -14,33 +14,44 @@ impl RaftRuntime {
         Self { node }
     }
 
-    pub async fn start_with_transport(mut self,mut rx: UnboundedReceiver<Event>,transport: ClusterTransport) -> Result<()> {
-
-
+    pub async fn start_with_transport(
+        mut self,
+        mut rx: UnboundedReceiver<Event>,
+        mut transport: ClusterTransport,
+    ) -> Result<()> {
         let mut ticker = interval(Duration::from_millis(100));
 
         loop {
             tokio::select! {
-                // TICK → drives election & heartbeat
                 _ = ticker.tick() => {
                     self.node.tick();
-                    self.node.on_ready(&transport)?;
+                    if let Err(e) = self.node.on_ready(&mut transport) {
+                        eprintln!("❌ Node {} on_ready error: {}", self.node.id, e);
+                    }
                 }
 
-                // INCOMING CLIENT / RAFT EVENTS
                 Some(event) = rx.recv() => {
                     match event {
                         Event::Propose { data, request_id, callback } => {
-                            // client command
                             self.node.callbacks.insert(request_id, callback);
-                            self.node.raw_node.propose(vec![], data)?;
+                            
+                            // DON'T PANIC on error - just log it
+                            if let Err(e) = self.node.raw_node.propose(vec![], data) {
+                                eprintln!("⚠️  Node {} rejected proposal: {}", self.node.id, e);
+                                // Remove callback since proposal failed
+                                self.node.callbacks.remove(&request_id);
+                            }
                         }
                         Event::Step(msg) => {
-                            // raft protocol messages
-                            self.node.raw_node.step(msg)?;
+                            if let Err(e) = self.node.raw_node.step(msg) {
+                                eprintln!("❌ Node {} step error: {}", self.node.id, e);
+                            }
                         }
                     }
-                    self.node.on_ready(&transport)?;
+                    
+                    if let Err(e) = self.node.on_ready(&mut transport) {
+                        eprintln!("❌ Node {} on_ready error: {}", self.node.id, e);
+                    }
                 }
             }
         }
