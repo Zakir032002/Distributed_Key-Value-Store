@@ -1,17 +1,162 @@
-   0.053106416s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint: stale: changed "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/node.rs"
-   0.053117958s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:           (vs) "/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-224e2c0d5ec420b5/dep-lib-raftcore"
-   0.053121083s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1767288451, nanos: 676430551 } < FileTime { seconds: 1767288452, nanos: 666308744 }
-   0.053220208s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint: fingerprint dirty for kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore)/Check { test: false }/TargetInner { name: "kvstore", doc: true, ..: with_path("/Users/zakirhussain/Desktop/distributed-kv/kvstore/src/main.rs", Edition2024) }
-   0.053229416s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "raftcore" })
-   0.053628916s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: fingerprint dirty for raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("raftcore", ["lib"], "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/lib.rs", Edition2024) }
-   0.053635208s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-224e2c0d5ec420b5/dep-lib-raftcore", reference_mtime: FileTime { seconds: 1767288451, nanos: 676430551 }, stale: "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/node.rs", stale_mtime: FileTime { seconds: 1767288452, nanos: 666308744 } }))
-   0.059038208s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint: fingerprint dirty for kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore)/Check { test: true }/TargetInner { name: "kvstore", doc: true, ..: with_path("/Users/zakirhussain/Desktop/distributed-kv/kvstore/src/main.rs", Edition2024) }
-   0.059047208s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "raftcore" })
-   0.059618000s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: stale: changed "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/node.rs"
-   0.059623375s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:           (vs) "/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-aa753772e8f9d1a7/dep-test-lib-raftcore"
-   0.059625166s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1767288451, nanos: 676379093 } < FileTime { seconds: 1767288452, nanos: 666308744 }
-   0.059666375s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: fingerprint dirty for raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("raftcore", ["lib"], "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/lib.rs", Edition2024) }
-   0.059672166s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-aa753772e8f9d1a7/dep-test-lib-raftcore", reference_mtime: FileTime { seconds: 1767288451, nanos: 676379093 }, stale: "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/node.rs", stale_mtime: FileTime { seconds: 1767288452, nanos: 666308744 } }))
+   0.078827792s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint: fingerprint error for kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore)/Check { test: false }/TargetInner { name: "kvstore", doc: true, ..: with_path("/Users/zakirhussain/Desktop/distributed-kv/kvstore/src/main.rs", Edition2024) }
+   0.078852417s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/kvstore-fd459c1747cc7c07/bin-kvstore`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.081737667s  INFO prepare_target{force=false package_id=futures v0.3.31 target="futures"}: cargo::core::compiler::fingerprint: fingerprint error for futures v0.3.31/Check { test: false }/TargetInner { ..: lib_target("futures", ["lib"], "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.31/src/lib.rs", Edition2018) }
+   0.081748792s  INFO prepare_target{force=false package_id=futures v0.3.31 target="futures"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/futures-2e1aa1ef091711b5/lib-futures`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: std::rt::lang_start_internal
+  18: _main
+   0.082969209s  INFO prepare_target{force=false package_id=futures-executor v0.3.31 target="futures_executor"}: cargo::core::compiler::fingerprint: fingerprint error for futures-executor v0.3.31/Check { test: false }/TargetInner { ..: lib_target("futures_executor", ["lib"], "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.31/src/lib.rs", Edition2018) }
+   0.082976750s  INFO prepare_target{force=false package_id=futures-executor v0.3.31 target="futures_executor"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/futures-executor-b71bd92a4725cf7e/lib-futures_executor`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: <cargo::cli::Exec>::exec
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  17: std::rt::lang_start::<()>::{closure#0}
+  18: std::rt::lang_start_internal
+  19: _main
+   0.083220959s  INFO prepare_target{force=false package_id=futures-util v0.3.31 target="futures_util"}: cargo::core::compiler::fingerprint: fingerprint error for futures-util v0.3.31/Check { test: false }/TargetInner { ..: lib_target("futures_util", ["lib"], "/Users/zakirhussain/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.31/src/lib.rs", Edition2018) }
+   0.083225625s  INFO prepare_target{force=false package_id=futures-util v0.3.31 target="futures_util"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/futures-util-e3e716da7207bbe8/lib-futures_util`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::compile
+  10: <cargo::core::compiler::build_runner::BuildRunner>::compile
+  11: cargo::ops::cargo_compile::compile_ws
+  12: cargo::ops::cargo_compile::compile_with_exec
+  13: cargo::ops::cargo_compile::compile
+  14: cargo::commands::check::exec
+  15: <cargo::cli::Exec>::exec
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  18: std::rt::lang_start::<()>::{closure#0}
+  19: std::rt::lang_start_internal
+  20: _main
+   0.096666084s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint: fingerprint error for kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore)/Check { test: true }/TargetInner { name: "kvstore", doc: true, ..: with_path("/Users/zakirhussain/Desktop/distributed-kv/kvstore/src/main.rs", Edition2024) }
+   0.096674500s  INFO prepare_target{force=false package_id=kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore) target="kvstore"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/kvstore-1024995a6eb2e4de/test-bin-kvstore`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+   0.097149834s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint: fingerprint error for raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("raftcore", ["lib"], "/Users/zakirhussain/Desktop/distributed-kv/raftcore/src/lib.rs", Edition2024) }
+   0.097155917s  INFO prepare_target{force=false package_id=raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore) target="raftcore"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/zakirhussain/Desktop/distributed-kv/target/debug/.fingerprint/raftcore-6c68372162ce7cba/test-lib-raftcore`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: std::backtrace::Backtrace::capture
+   2: cargo_util::paths::read_bytes
+   3: cargo_util::paths::read
+   4: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   5: cargo::core::compiler::fingerprint::prepare_target
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: std::rt::lang_start_internal
+  17: _main
+    Checking futures-util v0.3.31
     Checking raftcore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/raftcore)
+    Checking futures-executor v0.3.31
+    Checking futures v0.3.31
     Checking kvstore v0.1.0 (/Users/zakirhussain/Desktop/distributed-kv/kvstore)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.59s
